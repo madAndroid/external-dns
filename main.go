@@ -123,6 +123,7 @@ func main() {
 				AssumeRole:           cfg.AWSAssumeRole,
 				APIRetries:           cfg.AWSAPIRetries,
 				PreferCNAME:          cfg.AWSPreferCNAME,
+				Route53Endpoint:      cfg.AWSRoute53Endpoint,
 				DryRun:               cfg.DryRun,
 			},
 		)

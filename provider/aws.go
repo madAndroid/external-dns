@@ -126,6 +126,7 @@ type AWSConfig struct {
 	APIRetries           int
 	PreferCNAME          bool
 	DryRun               bool
+	Route53Endpoint      string
 }
 
 // NewAWSProvider initializes a new AWS Route53 based Provider.
@@ -154,8 +155,15 @@ func NewAWSProvider(awsConfig AWSConfig) (*AWSProvider, error) {
 		session.Config.WithCredentials(stscreds.NewCredentials(session, awsConfig.AssumeRole))
 	}
 
+	/*if awsConfig.Route53Endpoint != "" {
+		log.Infof("Using endpoint: %s", awsConfig.Route53Endpoint)
+		endpoint = aws.NewConfig().WithEndpoint(awsConfig.Route53Endpoint)
+	} else {
+		endpoint = aws.NewConfig()
+	}*/
+
 	provider := &AWSProvider{
-		client:               route53.New(session),
+		client:               route53.New(session, aws.NewConfig().WithEndpoint(awsConfig.Route53Endpoint)),
 		domainFilter:         awsConfig.DomainFilter,
 		zoneIDFilter:         awsConfig.ZoneIDFilter,
 		zoneTypeFilter:       awsConfig.ZoneTypeFilter,
